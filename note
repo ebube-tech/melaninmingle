@@ -1,0 +1,12 @@
+Message
+-Sender
+-Receiver
+-Message
+-Date
+
+Group
+-Creator
+-group_name
+-admins -> array of email -> default-array
+-members -> array of email
+-date
