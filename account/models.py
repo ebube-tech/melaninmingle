@@ -60,8 +60,8 @@ class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    bio = models.TextField()
-    phone_number = models.CharField(max_length=20)
+    bio = models.TextField(blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     
     created_at = models.DateTimeField(auto_now_add=True)
