@@ -1,12 +1,18 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<form action='' method='POST' enctype="multipart/form-data">
+<form action="" method="POST">
     {% csrf_token %}
-    {{auth_form.as_p}}
-    {{profile_form.as_p}}
-    
-    <button type='submit'>Create Account</button>
+
+    {% comment %} {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li {% if message.tags == 'error' %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %} {% endcomment %}
+
+    {{ form.as_p}}
+    <button type='submit'>Login</button>
 </form>
 {% endblock content %}

@@ -10,6 +10,12 @@ class ProfileForm(forms.ModelForm):
         exclude = ('user',)
         fields = ('first_name', 'last_name', 'bio', 'phone_number', 'avatar')
 
+
+class CustomAuthenticationForm(forms.Form):
+    email = forms.EmailField(label='Email', widget=forms.EmailInput)
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+
 class UserCreationForm(forms.ModelForm):
     """A form for creating new users. Includes all the required
     fields, plus a repeated password."""

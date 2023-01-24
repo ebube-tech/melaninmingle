@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login,  logout
 from django.contrib.auth.decorators import login_required
-# from django.contrib.auth.forms import UserCreationForm
-from .forms import ProfileForm, UserCreationForm
+from django.contrib import messages
+from .forms import ProfileForm, UserCreationForm, CustomAuthenticationForm
 from django.http import HttpRequest, HttpResponse
 
 # Create your views here.
@@ -23,8 +23,22 @@ def register(request: HttpRequest) -> HttpResponse:
     return render(request, "account/register.html", context)
 
 def login_view(request: HttpRequest) -> HttpResponse:
-    
-    return render(request, "account/login.html", {})
+    form = CustomAuthenticationForm(request.POST or None)
+    if form.is_valid():
+        email = form.cleaned_data['email']
+        password = form.cleaned_data['password']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, 'You are logged In!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Incorrect email or password!')
+            return redirect('account:login')
+    context = {
+        'form': form
+    }
+    return render(request, "account/login.html", context)
 
 
 @login_required
