@@ -3,11 +3,14 @@ import json
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Message
-from groupchat.models import GroupMember, Conversation
+from groupchat.models import GroupMember, Room
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
+        self.sender = self.scope['user']
+        self.receiver = self.scope["url_route"]["kwargs"]["room_name"]
+
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
 
