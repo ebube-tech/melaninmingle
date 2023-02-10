@@ -17,7 +17,7 @@ class Conversation(models.Model):
 
 class GroupMember(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    user = models.ForeignKey(Auth_User, related_name='group_member', on_delete=models.CASCADE)
+    user = models.ManyToManyField(Auth_User)
 
     joined_date = models.DateTimeField(auto_now_add=True)
     left_date = models.DateTimeField(auto_now=True)

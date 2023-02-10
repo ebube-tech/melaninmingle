@@ -10,3 +10,7 @@ Group
 -admins -> array of email -> default-array
 -members -> array of email
 -date
+
+
+-------------------
+SHOULD HAVE REDIS INSTALL ON SYSTEM

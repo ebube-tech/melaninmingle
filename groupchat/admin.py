@@ -5,7 +5,7 @@ from .models import GroupMember, Conversation
 class GroupMemberInline(admin.StackedInline):
     model = GroupMember
     extra = 1
-    raw_id_fields = ['user']
+    raw_id_fields = ['user', 'conversation']
 
 class ConversationAdmin(admin.ModelAdmin):
     inlines = [GroupMemberInline]

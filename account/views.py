@@ -13,6 +13,7 @@ def register(request: HttpRequest) -> HttpResponse:
 
     if auth_form.is_valid() and profile_form.is_valid():
         user = auth_form.save()
+        print(user.email)
         profile = profile_form.save(commit=False)
         profile.user = user
         profile.save()
@@ -28,6 +29,7 @@ def login_view(request: HttpRequest) -> HttpResponse:
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
         user = authenticate(request, email=email, password=password)
+        print(user)
         if user is not None:
             login(request, user)
             messages.success(request, 'You are logged In!')

@@ -1,6 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.db.models.signals import pre_save, post_save
+from django.urls import reverse
+from django.conf import settings
 
+from .utils import slugify_instance_name
+# User = settings.AUTH_USER_MODEL
 # Create your models here.
 
 class MyAccountManager(BaseUserManager):
@@ -60,6 +65,7 @@ class Profile(models.Model):
     user = models.OneToOneField(Account, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
+    username = models.CharField(max_length=100, unique=True)
     bio = models.TextField(blank=True, null=True)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
@@ -69,3 +75,16 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+
+def profile_post_pre_save(sender, instance, *args, **kwargs):
+    if instance.username is None:
+        slugify_instance_name(instance)
+
+pre_save.connect(profile_post_pre_save, sender=Profile) 
+
+def profile_post_post_save(sender, instance, created, *args, **kwargs):
+    if created:
+        slugify_instance_name(instance, save=True)
+
+post_save.connect(profile_post_post_save, sender=Profile) 
