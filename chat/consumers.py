@@ -9,9 +9,9 @@ from groupchat.models import GroupMember, Room
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         self.sender = self.scope['user']
-        self.receiver = self.scope["url_route"]["kwargs"]["room_name"]
+        self.username = self.scope["url_route"]["kwargs"]["username"]
 
-        self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
+        self.room_name = self.scope["url_route"]["kwargs"]["username"]
         self.room_group_name = "chat_%s" % self.room_name
 
         # Join room group

@@ -76,6 +76,8 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
 
+    def get_username(self):
+        return f'{self.username}'
 
 def profile_post_pre_save(sender, instance, *args, **kwargs):
     if instance.username is None:
