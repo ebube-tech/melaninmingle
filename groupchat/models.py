@@ -12,16 +12,28 @@ class Room(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @classmethod
+    def create(cls, group_name):
+        # room = cls(group_name=group_name)
+        room = cls.objects.create(group_name=group_name)
+        return room
+
     def __str__(self) -> str:
         return self.group_name
 
 
 class GroupMember(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    user = models.ManyToManyField(Auth_User)
+    user = models.ForeignKey(Auth_User, on_delete=models.CASCADE)
 
     joined_date = models.DateTimeField(auto_now_add=True)
     left_date = models.DateTimeField(auto_now=True)
+
+    @classmethod
+    def create(cls, room, user):
+        # group_member = cls(room=room, user=user)
+        group_member = cls.objects.create(room=room, user=user)
+        return group_member
 
     def __str__(self) -> str:
         return self.user.email

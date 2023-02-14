@@ -9,22 +9,24 @@
     <textarea id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send">
-    {{ username|json_script:"username" }}
+    {{ room_name|json_script:"room_name" }}
+    {{ first_name|json_script:"first_name" }}
     <script>
+        console.log(first_name)
         console.log(window.location)
-        const roomName = JSON.parse(document.getElementById('username').textContent);
+        const roomName = JSON.parse(document.getElementById('room_name').textContent);
         const loc = window.location
         let wsStart = 'ws://'
         if(loc.protocol == 'https:'){
             wsStart = 'wss://'
         }
-        const endpoint = wsStart + loc.host + '/ws/chat/' + roomName + '/'
+        const endpoint = wsStart + loc.host + '/ws/chat/' + roomName + '/' 
 
         const chatSocket = new WebSocket(endpoint);
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            document.querySelector('#chat-log').value += (data.message + ' from ' + data.sender + '\n');
         };
 
         chatSocket.onclose = function(e) {
@@ -42,7 +44,8 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'sender' : JSON.parse(document.getElementById('first_name').textContent)
             }));
             messageInputDom.value = '';
         };

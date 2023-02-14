@@ -14,3 +14,6 @@ Group
 
 -------------------
 SHOULD HAVE REDIS INSTALL ON SYSTEM
+
+***To start redis server in ubuntu***
+sudo service redis-server start
